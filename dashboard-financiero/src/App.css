@@ -1,0 +1,10 @@
+.tema-oscuro,
+.tema-claro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-base);
+  transition: background-color var(--transicion-lenta), color var(--transicion-lenta);
+}

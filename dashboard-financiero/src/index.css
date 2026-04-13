@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Variables base sin color (fuentes y medidas) */
+  --fuente-base:    'Inter', system-ui, sans-serif;
+  --tamaño-xs:      0.75rem;
+  --tamaño-sm:      0.875rem;
+  --tamaño-base:    1rem;
+  --tamaño-lg:      1.125rem;
+  --tamaño-xl:      1.25rem;
+  --tamaño-2xl:     1.5rem;
+  --tamaño-3xl:     1.875rem;
+  --tamaño-5xl:     3rem;
+
+  --espacio-1:  0.25rem;
+  --espacio-2:  0.5rem;
+  --espacio-3:  0.75rem;
+  --espacio-4:  1rem;
+  --espacio-5:  1.25rem;
+  --espacio-6:  1.5rem;
+  --espacio-8:  2rem;
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --radio-lg: 14px;
+  --radio-xl: 18px;
+  --radio-2xl: 24px;
+  --radio-full: 9999px;
+
+  --transicion-rapida:  150ms cubic-bezier(0.4,0,0.2,1);
+  --transicion-normal:  250ms cubic-bezier(0.4,0,0.2,1);
+  --transicion-lenta:   400ms cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── TEMA OSCURO (Default actual con Glassmorphism) ─── */
+.tema-oscuro {
+  /* Fondo transparente porque la imagen de fondo irá en Layout */
+  --color-fondo:          transparent;
+  
+  /* Superficies de cristal (Translúcidas para dejar ver el fondo) */
+  --color-superficie:     rgba(13, 20, 36, 0.55);
+  --color-superficie-2:   rgba(31, 41, 55, 0.50);
+  --color-superficie-3:   rgba(55, 65, 81, 0.45);
+  
+  /* Bordes de cristal */
+  --color-borde:          rgba(255, 255, 255, 0.08);
+  --color-borde-suave:    rgba(255, 255, 255, 0.03);
+
+  /* Primario — Índigo eléctrico vibrante (ajustado para fondo llamativo) */
+  --color-primario:       #4c6ef5;
+  --color-primario-claro: #748ffc;
+  --color-primario-hover: #3b5bdb;
+  --color-primario-suave: rgba(76, 110, 245, 0.20);
+  --color-primario-glow:  rgba(76, 110, 245, 0.35);
+
+  /* Estados y Alertas */
+  --color-excelente:      #10b981;
+  --color-excelente-bg:   rgba(16, 185, 129, 0.15);
+  --color-excelente-glow: rgba(16, 185, 129, 0.25);
+
+  --color-advertencia:    #f59e0b;
+  --color-advertencia-bg: rgba(245, 158, 11, 0.15);
+  --color-advertencia-glow: rgba(245, 158, 11, 0.25);
+
+  --color-critico:        #f43f5e;
+  --color-critico-bg:     rgba(244, 63, 94, 0.15);
+  --color-critico-glow:   rgba(244, 63, 94, 0.25);
+
+  /* Texto */
+  --color-texto:          #f9fafb;
+  --color-texto-suave:    #9ca3af;
+  --color-texto-muy-suave:#6b7280;
+
+  /* Gradientes translúcidos */
+  --grad-primario:   linear-gradient(135deg, #4c6ef5, #748ffc);
+  --grad-excelente:  linear-gradient(135deg, #10b981, #34d399);
+  --grad-superficie: linear-gradient(135deg, rgba(13, 20, 36, 0.65) 0%, rgba(17, 25, 45, 0.45) 100%);
+  --grad-card:       linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 100%);
+
+  /* Sombras oscuras para levantar las tarjetas de cristal */
+  --sombra-sm:  0 4px 6px rgba(0,0,0,0.3);
+  --sombra-md:  0 10px 20px rgba(0,0,0,0.4);
+  --sombra-lg:  0 15px 35px rgba(0,0,0,0.5);
+  --vidrio-bg:  rgba(17, 24, 39, 0.85);
+}
+
+/* ─── TEMA CLARO (Alternativo) ─── */
+.tema-claro {
+  --color-fondo:          #f8f9fa;
+  --color-superficie:     #ffffff;
+  --color-superficie-2:   #f1f3f5;
+  --color-superficie-3:   #e9ecef;
+  --color-borde:          #e2e8f0;
+  --color-borde-suave:    #f1f5f9;
+
+  --color-primario:       #4f46e5;
+  --color-primario-claro: #6366f1;
+  --color-primario-hover: #4338ca;
+  --color-primario-suave: rgba(79, 70, 229, 0.08);
+  --color-primario-glow:  rgba(79, 70, 229, 0.15);
+
+  --color-excelente:      #059669;
+  --color-excelente-bg:   rgba(5, 150, 105, 0.08);
+  --color-excelente-glow: rgba(5, 150, 105, 0.15);
+  --color-advertencia:    #d97706;
+  --color-advertencia-bg: rgba(217, 119, 6, 0.08);
+  --color-advertencia-glow: rgba(217, 119, 6, 0.15);
+  --color-critico:        #e11d48;
+  --color-critico-bg:     rgba(225, 29, 72, 0.08);
+  --color-critico-glow:   rgba(225, 29, 72, 0.15);
+
+  --color-texto:          #0f172a;
+  --color-texto-suave:    #475569;
+  --color-texto-muy-suave:#64748b;
+
+  --grad-primario:   linear-gradient(135deg, #4f46e5, #6366f1);
+  --grad-excelente:  linear-gradient(135deg, #059669, #10b981);
+  --grad-superficie: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --grad-card:       linear-gradient(145deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0) 100%);
+
+  --sombra-sm:  0 1px 2px rgba(0,0,0,0.04);
+  --sombra-md:  0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.03);
+  --sombra-lg:  0 10px 15px -3px rgba(0,0,0,0.06), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --vidrio-bg:  rgba(255,255,255,0.85);
+}
+
+
+/* ─── Reset y Patrones base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--fuente-base);
+  font-size: var(--tamaño-base);
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Patrón de puntos sutil para tema claro */
+.tema-claro body {
+  background-image: radial-gradient(var(--color-borde) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Patrón reticular sutil para tema oscuro estilo Dashboard Code/Fintech */
+.tema-oscuro body {
+  background-color: #050b14; /* Color de respaldo sólido muy oscuro */
+}
+
+h1,h2,h3,h4,h5,h6 { line-height:1.25; font-weight:700; color:var(--color-texto); letter-spacing:-0.01em; }
+p { color: var(--color-texto-suave); }
+a { color: var(--color-primario); text-decoration: none; }
+button { cursor:pointer; font-family:var(--fuente-base); border:none; background:none; }
+input, select, textarea { font-family: var(--fuente-base); }
+
+/* SVG Global */
+.icono {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nivel-excelente   { color: var(--color-excelente); }
+.nivel-bueno       { color: var(--color-primario-claro); }
+.nivel-advertencia { color: var(--color-advertencia); }
+.nivel-critico     { color: var(--color-critico); }
+
+::-webkit-scrollbar              { width:6px; height:6px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: var(--color-borde); border-radius:var(--radio-full); }
+::-webkit-scrollbar-thumb:hover  { background: var(--color-texto-muy-suave); }
+
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }

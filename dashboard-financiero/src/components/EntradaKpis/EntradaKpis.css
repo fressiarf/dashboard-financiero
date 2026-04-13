@@ -1,0 +1,230 @@
+.entrada-kpis {
+  background: var(--grad-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-2xl);
+  padding: var(--espacio-6);
+  box-shadow: var(--sombra-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-6);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.entrada-kpis::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--grad-primario);
+}
+
+/* Resplandor de fondo */
+.entrada-kpis::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--color-primario-glow) 0%, transparent 70%);
+  right: -150px; bottom: -150px;
+  pointer-events: none;
+}
+
+.entrada-kpis__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.entrada-kpis__titulo {
+  font-size: var(--tamaño-xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  background: linear-gradient(135deg, var(--color-texto) 40%, var(--color-primario-claro));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.entrada-kpis__subtitulo {
+  font-size: var(--tamaño-xs);
+  color: var(--color-texto-muy-suave);
+  margin-top: var(--espacio-1);
+  letter-spacing: 0.01em;
+}
+
+/* ─── Grupos de campos ─── */
+.entrada-kpis__grupos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--espacio-4);
+  position: relative;
+  z-index: 1;
+}
+
+.grupo-campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4) var(--espacio-5);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-xl);
+  transition: border-color var(--transicion-normal), box-shadow var(--transicion-normal);
+}
+
+.grupo-campos:hover {
+  border-color: rgba(99,102,241,0.25);
+  box-shadow: 0 0 20px var(--color-primario-glow);
+}
+
+.grupo-campos__titulo {
+  font-size: var(--tamaño-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--color-primario-claro);
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding-bottom: var(--espacio-2);
+  border-bottom: 1px solid var(--color-borde-suave);
+}
+
+/* ─── Campo individual ─── */
+.campo-kpi { display:flex; flex-direction:column; gap:4px; }
+
+.campo-kpi__etiqueta {
+  font-size: var(--tamaño-xs);
+  font-weight: 600;
+  color: var(--color-texto-suave);
+  letter-spacing: 0.01em;
+}
+
+.campo-kpi__descripcion {
+  font-size: 10.5px;
+  color: var(--color-texto-muy-suave);
+  line-height: 1.4;
+}
+
+.campo-kpi__input-wrapper { position:relative; display:flex; align-items:center; }
+
+.campo-kpi__prefijo,
+.campo-kpi__sufijo {
+  position: absolute;
+  font-size: var(--tamaño-xs);
+  font-weight: 700;
+  color: var(--color-texto-muy-suave);
+  pointer-events: none;
+  transition: color var(--transicion-rapida);
+}
+
+.campo-kpi__prefijo { left: var(--espacio-3); }
+.campo-kpi__sufijo  { right: var(--espacio-3); }
+
+.campo-kpi__input {
+  width: 100%;
+  padding: var(--espacio-2) var(--espacio-3);
+  background: var(--color-superficie-3);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  color: var(--color-texto);
+  font-size: var(--tamaño-sm);
+  font-weight: 600;
+  transition: border-color var(--transicion-rapida), box-shadow var(--transicion-rapida), background var(--transicion-rapida);
+  -moz-appearance: textfield;
+}
+
+.campo-kpi__input::-webkit-inner-spin-button,
+.campo-kpi__input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.campo-kpi__input:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  background: rgba(99,102,241,0.05);
+  box-shadow: 0 0 0 3px var(--color-primario-glow);
+}
+
+.campo-kpi__input:focus ~ .campo-kpi__prefijo,
+.campo-kpi__input-wrapper:focus-within .campo-kpi__prefijo,
+.campo-kpi__input-wrapper:focus-within .campo-kpi__sufijo {
+  color: var(--color-primario-claro);
+}
+
+.campo-kpi__input--con-prefijo { padding-left: 1.75rem; }
+.campo-kpi__input--con-sufijo  { padding-right: 1.75rem; }
+
+/* ─── Acciones ─── */
+.entrada-kpis__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-3);
+  padding-top: var(--espacio-4);
+  border-top: 1px solid var(--color-borde-suave);
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-restablecer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-4);
+  border-radius: var(--radio-md);
+  font-size: var(--tamaño-sm);
+  font-weight: 500;
+  color: var(--color-texto-suave);
+  background: var(--color-superficie-2);
+  border: 1px solid var(--color-borde);
+  cursor: pointer;
+  transition: all var(--transicion-rapida);
+}
+
+.btn-restablecer:hover {
+  background: var(--color-superficie-3);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+  transform: translateY(-1px);
+}
+
+.btn-analizar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-6);
+  border-radius: var(--radio-md);
+  font-size: var(--tamaño-sm);
+  font-weight: 700;
+  color: #fff;
+  background: var(--grad-primario);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transicion-normal);
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px var(--color-primario-glow);
+}
+
+.btn-analizar:hover {
+  background: linear-gradient(135deg, var(--color-primario-hover), var(--color-primario));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--color-primario-glow);
+}
+
+.btn-analizar:active { transform: translateY(0); }
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .entrada-kpis__grupos { grid-template-columns: 1fr; }
+  .entrada-kpis__acciones { flex-direction: column; }
+  .btn-analizar, .btn-restablecer { width: 100%; justify-content: center; }
+}

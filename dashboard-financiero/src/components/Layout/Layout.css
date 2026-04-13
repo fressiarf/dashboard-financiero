@@ -1,0 +1,32 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  
+  /* Ajuste de luminosidad: el overlay es ahora menos opresivo, con azules más vibrantes y menor opacidad para dejar brillar la imagen, manteniendo contraste */
+  background-image: 
+    linear-gradient(to bottom, rgba(32, 53, 98, 0.35), rgba(9, 18, 38, 0.65)),
+    url('/fondo_dashboard.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.app-main {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+  padding: var(--espacio-6) var(--espacio-8);
+  scroll-behavior: smooth;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .app-layout { flex-direction: column; }
+  .app-main { padding: var(--espacio-4); }
+}

@@ -1,0 +1,170 @@
+/* En Dashboard.css reemplazamos completamente la estructura vieja */
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-6);
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeEntrada 0.5s ease;
+}
+
+@keyframes fadeEntrada {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--espacio-4);
+  border-bottom: 1px solid var(--color-borde-suave);
+}
+
+.page-header__texto h2 {
+  font-size: var(--tamaño-2xl);
+  font-weight: 800;
+  color: var(--color-texto);
+  letter-spacing: -0.02em;
+}
+
+.page-header__dinamico {
+  font-size: var(--tamaño-sm);
+  font-weight: 500;
+  margin-top: var(--espacio-2);
+  color: var(--color-texto-suave);
+  background: var(--color-superficie-2);
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: var(--radio-full);
+  border: 1px solid var(--color-borde);
+}
+
+/* Colores de texto predictivo basados en el estado */
+.estado-salud-óptima { color: var(--color-excelente) !important; border-color: rgba(16,185,129,0.3) !important; background: var(--color-excelente-bg) !important; }
+.estado-bajo-riesgo { color: var(--color-primario-claro) !important; border-color: rgba(99,102,241,0.3) !important; background: var(--color-bueno-bg) !important; }
+.estado-riesgo-moderado { color: var(--color-advertencia) !important; border-color: rgba(245,158,11,0.3) !important; background: var(--color-advertencia-bg) !important; }
+.estado-alto-riesgo { color: var(--color-critico) !important; border-color: rgba(244,63,94,0.3) !important; background: var(--color-critico-bg) !important; }
+
+.btn-editar-kpis {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3) var(--espacio-5);
+  border-radius: var(--radio-md);
+  font-size: var(--tamaño-sm);
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-superficie-3);
+  border: 1px solid var(--color-borde);
+  cursor: pointer;
+  transition: all var(--transicion-normal);
+}
+
+.btn-editar-kpis:hover {
+  background: var(--grad-primario);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--color-primario-glow);
+}
+
+.btn-editar-kpis.activo {
+  background: var(--color-superficie-2);
+  color: var(--color-texto-suave);
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-6);
+}
+
+.dashboard__panel-edicion {
+  animation: deslizarAbajo 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes deslizarAbajo {
+  from { opacity: 0; transform: translateY(-16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 768px) {
+  .page-header { flex-direction: column; align-items: flex-start; }
+}
+
+/* --- ESTILOS AGREGADOS PARA VISTAS ADICIONALES --- */
+.fade-in {
+  animation: fadeEntrada 0.4s ease forwards;
+}
+
+.card-pantalla-limpia {
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-6);
+  box-shadow: var(--sombra-sm);
+  margin-top: var(--espacio-2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.tabla-limpia {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-limpia th {
+  padding: var(--espacio-3) var(--espacio-4);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-muy-suave);
+  border-bottom: 1px solid var(--color-borde);
+  font-weight: 700;
+}
+
+.tabla-limpia td {
+  padding: var(--espacio-4);
+  font-size: var(--tamaño-sm);
+  border-bottom: 1px solid var(--color-borde-suave);
+  vertical-align: middle;
+}
+
+.tabla-limpia tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-limpia tbody tr {
+  transition: background var(--transicion-rapida);
+}
+
+.tabla-limpia tbody tr:hover {
+  background: var(--color-superficie-2);
+}
+
+.badge-estado {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radio-full);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-completado {
+  background: var(--color-excelente-bg);
+  color: var(--color-excelente);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+.badge-pendiente {
+  background: var(--color-advertencia-bg);
+  color: var(--color-advertencia);
+  border: 1px solid rgba(245,158,11,0.2);
+}
