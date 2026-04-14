@@ -1,4 +1,4 @@
-const Icono = ({ nombre, tamaño = 20, clase = '' }) => {
+const Icono = ({ nombre, tamaño = 20, clase = '', ...props }) => {
   return (
     <svg
       width={tamaño}
@@ -7,6 +7,7 @@ const Icono = ({ nombre, tamaño = 20, clase = '' }) => {
       role="presentation"
       aria-hidden="true"
       focusable="false"
+      {...props}
     >
       <use href={`/iconos.svg#icono-${nombre}`} />
     </svg>

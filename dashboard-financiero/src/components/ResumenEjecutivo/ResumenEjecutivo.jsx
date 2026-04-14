@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import useAnalisisFinanciero from '../../utils/useAnalisisFinanciero'
+import { consultarIAFinanciera } from '../../services/iaSimulada'
 import Icono from '../Icono/Icono'
 import './ResumenEjecutivo.css'
 
@@ -155,6 +156,90 @@ const exportarJSON = (analisis) => {
   URL.revokeObjectURL(url)
 }
 
+// ─── Panel de Análisis IA ───────────────────────────────────────────────────
+
+const PanelIA = ({ kpis, puntajeSalud }) => {
+  const [estado, setEstado]   = useState('idle') // 'idle' | 'cargando' | 'listo'
+  const [respuesta, setRespuesta] = useState(null)
+
+  const consultar = useCallback(async () => {
+    if (!kpis || !puntajeSalud) return
+    setEstado('cargando')
+    try {
+      const result = await consultarIAFinanciera(kpis, puntajeSalud)
+      setRespuesta(result)
+      setEstado('listo')
+    } catch {
+      setEstado('idle')
+    }
+  }, [kpis, puntajeSalud])
+
+  // Re-run automatically when kpis change and panel is already open
+  useEffect(() => {
+    if (estado === 'listo') {
+      setEstado('idle')
+      setRespuesta(null)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(kpis)])
+
+  return (
+    <section className="panel-ia" aria-labelledby="titulo-ia">
+      <div className="panel-ia__cabecera">
+        <div className="panel-ia__titulo-wrap">
+          <div className="panel-ia__icono-wrap">
+            <Icono nombre="calificacion" tamaño={16} />
+          </div>
+          <div>
+            <h2 className="panel-ia__titulo" id="titulo-ia">Análisis con Inteligencia Artificial</h2>
+            <p className="panel-ia__subtitulo">Motor analítico - Procesamiento en tiempo real</p>
+          </div>
+        </div>
+        <button
+          id="btn-consultar-ia"
+          className={`panel-ia__btn ${estado === 'cargando' ? 'panel-ia__btn--cargando' : ''}`}
+          onClick={consultar}
+          disabled={estado === 'cargando'}
+        >
+          {estado === 'cargando' ? (
+            <><div className="spinner-mini" aria-hidden="true" /> Analizando...</>
+          ) : (
+            <><Icono nombre="calificacion" tamaño={14} /> {respuesta ? 'Regenerar Análisis' : 'Consultar IA'}</>
+          )}
+        </button>
+      </div>
+
+      {estado === 'idle' && !respuesta && (
+        <div className="panel-ia__placeholder">
+          <Icono nombre="informacion" tamaño={32} clase="panel-ia__placeholder-icono" />
+          <p>Haz clic en <strong>Consultar IA</strong> para obtener un análisis ejecutivo generado automáticamente a partir de los datos financieros del período.</p>
+        </div>
+      )}
+
+      {estado === 'cargando' && (
+        <div className="panel-ia__cargando">
+          <div className="panel-ia__dots">
+            <span /><span /><span />
+          </div>
+          <p>El motor financiero está procesando los indicadores...</p>
+        </div>
+      )}
+
+      {estado === 'listo' && respuesta && (
+        <div className="panel-ia__respuesta">
+          <p className="panel-ia__texto">{respuesta.analisis}</p>
+          <div className="panel-ia__meta">
+            <span><Icono nombre="eficiencia" tamaño={11} /> Modelo: {respuesta.metadatos.modelo}</span>
+            <span><Icono nombre="informacion" tamaño={11} /> Latencia simulada: {respuesta.metadatos.latenciaMs}ms</span>
+            <span><Icono nombre="calificacion" tamaño={11} /> ~{respuesta.metadatos.tokensEstimados} tokens</span>
+            <span><Icono nombre="editar" tamaño={11} /> {respuesta.metadatos.generadaEn}</span>
+          </div>
+        </div>
+      )}
+    </section>
+  )
+}
+
 const ResumenEjecutivo = ({ kpis, alAnalisisCompleto }) => {
   const { analisis, cargando, error } = useAnalisisFinanciero(kpis)
 
@@ -245,6 +330,9 @@ const ResumenEjecutivo = ({ kpis, alAnalisisCompleto }) => {
           {puntajeSalud.estado} — {puntajeSalud.global}/100
         </div>
       </section>
+
+      {/* Panel de IA simulada */}
+      <PanelIA kpis={kpis} puntajeSalud={puntajeSalud} />
 
       <section className="narrativa" aria-labelledby="titulo-narrativa">
         <h2 className="narrativa__titulo" id="titulo-narrativa">

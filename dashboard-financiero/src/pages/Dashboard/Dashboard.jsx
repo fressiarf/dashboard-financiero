@@ -1,16 +1,17 @@
 import { useAnalisis } from '../../context/AnalisisContexto'
 import ResumenEjecutivo from '../../components/ResumenEjecutivo/ResumenEjecutivo'
 import EntradaKpis from '../../components/EntradaKpis/EntradaKpis'
+import GraficoIngresos from '../../components/GraficoIngresos/GraficoIngresos'
 import Icono from '../../components/Icono/Icono'
 import { useState } from 'react'
 import './Dashboard.css'
 
 const Dashboard = () => {
-  const { kpis, setKpis, modoEdicion, setModoEdicion } = useAnalisis()
+  const { kpis, datosBase, setDatosBase, modoEdicion, setModoEdicion } = useAnalisis()
   const [salud, setSalud] = useState(null)
 
-  const manejarNuevosKpis = (nuevosKpis) => {
-    setKpis(nuevosKpis)
+  const manejarNuevosDatos = (nuevosDatosBase) => {
+    setDatosBase(nuevosDatosBase)
     setModoEdicion(false)
   }
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
         <div className="page-header__texto">
           <h2>Bienvenido al panel de control</h2>
           <p className={`page-header__dinamico ${salud?.estado ? 'estado-' + salud.estado.toLowerCase().replace(/ /g, '-') : ''}`}>
-             <Icono nombre="informacion" tamaño={14} style={{ marginRight: '6px', opacity: 0.8, marginTop: '2px' }} />
+             <Icono nombre="informacion" tamaño={14} style={{ opacity: 0.8 }} />
              {obtenerMensajeBienvenida()}
           </p>
         </div>
@@ -43,7 +44,7 @@ const Dashboard = () => {
             onClick={() => setModoEdicion(!modoEdicion)}
           >
             <Icono nombre="editar" tamaño={15} />
-            {modoEdicion ? 'Ocultar Datos' : 'Actualizar KPIs'}
+            {modoEdicion ? 'Ocultar Datos' : 'Actualizar Datos'}
           </button>
         </div>
       </header>
@@ -52,12 +53,16 @@ const Dashboard = () => {
         {modoEdicion && (
           <div className="dashboard__panel-edicion">
             <EntradaKpis
-              kpisIniciales={kpis}
-              alEnviar={manejarNuevosKpis}
+              datosBaseIniciales={datosBase}
+              alEnviar={manejarNuevosDatos}
               alCancelar={() => setModoEdicion(false)}
             />
           </div>
         )}
+
+        {/* Gráfico de Ingresos vs Gastos */}
+        <GraficoIngresos kpis={kpis} />
+
         <ResumenEjecutivo kpis={kpis} alAnalisisCompleto={manejarAnalisisCompleto} />
       </div>
     </div>

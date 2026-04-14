@@ -1,122 +1,134 @@
 import { useState } from 'react'
 import Icono from '../Icono/Icono'
+import { calcularTodosLosKpis, DATOS_BASE_INICIALES } from '../../utils/calcularKpis'
 import './EntradaKpis.css'
 
-const KPI_INICIALES = {
-  ingresoTotal:       50000,
-  costoTotal:         35000,
-  margenNeto:         30,
-  margenBruto:        45,
-  ROI:                42.5,
-  puntoEquilibrio:    15000,
-  ventasActuales:     50000,
-  ventasAnterior:     47500,
-  crecimientoMensual: 5.2,
-  costosFijos:        12000,
-  costosVariables:    23000,
-  capitalInvertido:   100000,
-  activos:            150000,
-  pasivos:            50000,
-  deuda:              30000,
-  flujoEfectivo:      8000,
-}
+// ─── Grupos de campos base (solo inputs del usuario) ────────────────────────
 
 const GRUPOS_CAMPOS = [
   {
-    titulo: 'Ingresos y Márgenes',
+    titulo: 'Ingresos del Período',
     icono: 'rentabilidad',
+    descripcionGrupo: 'Datos de ventas y liquidez',
     campos: [
-      { clave: 'ingresoTotal',  etiqueta: 'Ingreso Total',   prefijo: '$', descripcion: 'Ventas brutas del período' },
-      { clave: 'costoTotal',    etiqueta: 'Costo Total',     prefijo: '$', descripcion: 'Suma de todos los costos' },
-      { clave: 'margenNeto',    etiqueta: 'Margen Neto',     sufijo:  '%', descripcion: 'Ganancia neta / Ingresos × 100' },
-      { clave: 'margenBruto',   etiqueta: 'Margen Bruto',    sufijo:  '%', descripcion: 'Ganancia bruta / Ingresos × 100' },
+      { clave: 'ingresos',       etiqueta: 'Ingresos Totales',   prefijo: '$', descripcion: 'Total de ventas brutas del período' },
+      { clave: 'ventasAnterior', etiqueta: 'Ventas Período Ant.', prefijo: '$', descripcion: 'Total de ventas del período previo' },
+      { clave: 'flujoEfectivo',  etiqueta: 'Flujo de Efectivo',  prefijo: '$', descripcion: 'Efectivo neto generado en el período' },
     ],
   },
   {
-    titulo: 'Costos y Estructura',
+    titulo: 'Estructura de Costos',
     icono: 'eficiencia',
+    descripcionGrupo: 'Costos fijos y variables',
     campos: [
-      { clave: 'costosFijos',     etiqueta: 'Costos Fijos',     prefijo: '$', descripcion: 'Renta, nómina base, seguros' },
-      { clave: 'costosVariables', etiqueta: 'Costos Variables', prefijo: '$', descripcion: 'Materiales, comisiones, envíos' },
-      { clave: 'puntoEquilibrio', etiqueta: 'Punto de Equilibrio', prefijo: '$', descripcion: 'Ventas mínimas para no perder' },
-    ],
-  },
-  {
-    titulo: 'Crecimiento y Ventas',
-    icono: 'crecimiento',
-    campos: [
-      { clave: 'ventasActuales',     etiqueta: 'Ventas Actuales',      prefijo: '$', descripcion: 'Total ventas del período actual' },
-      { clave: 'ventasAnterior',     etiqueta: 'Ventas Período Ant.',  prefijo: '$', descripcion: 'Total ventas período anterior' },
-      { clave: 'crecimientoMensual', etiqueta: 'Crecimiento Mensual',  sufijo:  '%', descripcion: '(Actual - Anterior) / Anterior × 100' },
+      { clave: 'costosFijos',     etiqueta: 'Costos Fijos',     prefijo: '$', descripcion: 'Renta, nómina base, seguros (no cambian con ventas)' },
+      { clave: 'costosVariables', etiqueta: 'Costos Variables', prefijo: '$', descripcion: 'Materiales, comisiones, envíos (proporcionales a ventas)' },
     ],
   },
   {
     titulo: 'Capital e Inversión',
     icono: 'dinero',
+    descripcionGrupo: 'Recursos y estructura financiera',
     campos: [
       { clave: 'capitalInvertido', etiqueta: 'Capital Invertido', prefijo: '$', descripcion: 'Total de capital propio + financiado' },
-      { clave: 'activos',          etiqueta: 'Activos Totales',   prefijo: '$', descripcion: 'Suma de todos los activos' },
-      { clave: 'ROI',              etiqueta: 'ROI',               sufijo:  '%', descripcion: 'Ganancia neta / Capital invertido × 100' },
-      { clave: 'flujoEfectivo',    etiqueta: 'Flujo de Efectivo', prefijo: '$', descripcion: 'Efectivo neto generado en el período' },
+      { clave: 'activos',          etiqueta: 'Activos Totales',   prefijo: '$', descripcion: 'Suma de todos los activos de la empresa' },
     ],
   },
   {
-    titulo: 'Deuda y Sostenibilidad',
+    titulo: 'Deuda y Pasivos',
     icono: 'sostenibilidad',
+    descripcionGrupo: 'Sostenibilidad financiera',
     campos: [
-      { clave: 'pasivos', etiqueta: 'Pasivos Totales',  prefijo: '$', descripcion: 'Suma de todas las obligaciones' },
-      { clave: 'deuda',   etiqueta: 'Deuda Financiera', prefijo: '$', descripcion: 'Préstamos y créditos bancarios' },
+      { clave: 'pasivos', etiqueta: 'Pasivos Totales',  prefijo: '$', descripcion: 'Suma de todas las obligaciones y deudas' },
+      { clave: 'deuda',   etiqueta: 'Deuda Financiera', prefijo: '$', descripcion: 'Préstamos y créditos bancarios vigentes' },
     ],
   },
 ]
 
-const CampoKpi = ({ campo, valor, alCambiar }) => {
-  const tienePrefijo = !!campo.prefijo
-  const tieneSufijo  = !!campo.sufijo
-  return (
-    <div className="campo-kpi">
-      <label className="campo-kpi__etiqueta" htmlFor={`campo-${campo.clave}`}>{campo.etiqueta}</label>
-      {campo.descripcion && <span className="campo-kpi__descripcion">{campo.descripcion}</span>}
-      <div className="campo-kpi__input-wrapper">
-        {tienePrefijo && <span className="campo-kpi__prefijo">{campo.prefijo}</span>}
-        <input
-          id={`campo-${campo.clave}`}
-          type="number"
-          step="any"
-          value={valor}
-          onChange={(e) => alCambiar(campo.clave, parseFloat(e.target.value) || 0)}
-          className={['campo-kpi__input', tienePrefijo ? 'campo-kpi__input--con-prefijo' : '', tieneSufijo ? 'campo-kpi__input--con-sufijo' : ''].join(' ')}
-        />
-        {tieneSufijo && <span className="campo-kpi__sufijo">{campo.sufijo}</span>}
-      </div>
+// ─── Sub-componente: Campo individual ───────────────────────────────────────
+
+const CampoKpi = ({ campo, valor, alCambiar }) => (
+  <div className="campo-kpi">
+    <label className="campo-kpi__etiqueta" htmlFor={`campo-${campo.clave}`}>{campo.etiqueta}</label>
+    {campo.descripcion && <span className="campo-kpi__descripcion">{campo.descripcion}</span>}
+    <div className="campo-kpi__input-wrapper">
+      {campo.prefijo && <span className="campo-kpi__prefijo">{campo.prefijo}</span>}
+      <input
+        id={`campo-${campo.clave}`}
+        type="number"
+        step="any"
+        min="0"
+        value={valor}
+        onChange={(e) => alCambiar(campo.clave, parseFloat(e.target.value) || 0)}
+        className={`campo-kpi__input ${campo.prefijo ? 'campo-kpi__input--con-prefijo' : ''}`}
+      />
     </div>
-  )
-}
+  </div>
+)
 
-const EntradaKpis = ({ alEnviar, alCancelar, kpisIniciales = KPI_INICIALES }) => {
-  const [valoresLocales, setValoresLocales] = useState({ ...kpisIniciales })
+// ─── Sub-componente: Preview de KPI derivado ────────────────────────────────
 
-  const actualizarCampo = (clave, valor) => {
-    setValoresLocales((prev) => ({ ...prev, [clave]: valor }))
-  }
+const KpiDerivado = ({ etiqueta, valor, icono, positivo }) => (
+  <div className={`kpi-derivado ${positivo ? 'kpi-derivado--positivo' : 'kpi-derivado--neutro'}`}>
+    <Icono nombre={icono} tamaño={14} />
+    <div className="kpi-derivado__info">
+      <span className="kpi-derivado__etiqueta">{etiqueta}</span>
+      <span className="kpi-derivado__valor">{valor}</span>
+    </div>
+  </div>
+)
 
-  const restablecer = () => setValoresLocales({ ...KPI_INICIALES })
+// ─── Componente principal ────────────────────────────────────────────────────
 
-  const enviarAnalisis = (e) => {
+const EntradaKpis = ({ alEnviar, alCancelar, datosBaseIniciales = DATOS_BASE_INICIALES }) => {
+  const [valores, setValores] = useState({ ...datosBaseIniciales })
+
+  const actualizarCampo = (clave, valor) =>
+    setValores((prev) => ({ ...prev, [clave]: valor }))
+
+  const restablecer = () => setValores({ ...DATOS_BASE_INICIALES })
+
+  const enviar = (e) => {
     e.preventDefault()
-    if (typeof alEnviar === 'function') alEnviar(valoresLocales)
+    if (typeof alEnviar === 'function') alEnviar(valores)
   }
+
+  // Vista previa de KPIs en tiempo real mientras el usuario escribe
+  const preview = calcularTodosLosKpis(valores)
+
+  const kpisPreview = [
+    { etiqueta: 'Margen Bruto',       valor: `${preview.margenBruto.toFixed(1)}%`,                  icono: 'rentabilidad',  positivo: preview.margenBruto > 20 },
+    { etiqueta: 'Margen Neto',        valor: `${preview.margenNeto.toFixed(1)}%`,                   icono: 'rentabilidad',  positivo: preview.margenNeto > 10 },
+    { etiqueta: 'ROI',                valor: `${preview.ROI.toFixed(1)}%`,                          icono: 'calificacion',  positivo: preview.ROI > 15 },
+    { etiqueta: 'Punto de Equilibrio',valor: `$${preview.puntoEquilibrio.toLocaleString('es-MX')}`, icono: 'eficiencia',    positivo: preview.puntoEquilibrio < preview.ingresoTotal },
+    { etiqueta: 'Crecimiento',        valor: `${preview.crecimientoMensual.toFixed(1)}%`,           icono: 'crecimiento',   positivo: preview.crecimientoMensual > 0 },
+  ]
 
   return (
-    <section className="entrada-kpis" aria-label="Formulario de entrada de KPIs">
-      <form onSubmit={enviarAnalisis} noValidate>
+    <section className="entrada-kpis" aria-label="Formulario de entrada de datos financieros">
+      <form onSubmit={enviar} noValidate>
         <div className="entrada-kpis__encabezado">
           <div>
             <h2 className="entrada-kpis__titulo">
               <Icono nombre="editar" tamaño={20} clase="nivel-bueno" />
-              Configurar KPIs
+              Datos Financieros Base
             </h2>
-            <p className="entrada-kpis__subtitulo">Ingresa los indicadores financieros del período a analizar</p>
+            <p className="entrada-kpis__subtitulo">
+              Ingresa los datos del período — los KPIs se calculan automáticamente
+            </p>
+          </div>
+        </div>
+
+        {/* Preview en tiempo real de KPIs derivados */}
+        <div className="entrada-kpis__preview">
+          <p className="entrada-kpis__preview-titulo">
+            <Icono nombre="calificacion" tamaño={13} />
+            KPIs calculados automáticamente
+          </p>
+          <div className="entrada-kpis__preview-grid">
+            {kpisPreview.map((k) => (
+              <KpiDerivado key={k.etiqueta} {...k} />
+            ))}
           </div>
         </div>
 
@@ -126,12 +138,13 @@ const EntradaKpis = ({ alEnviar, alCancelar, kpisIniciales = KPI_INICIALES }) =>
               <h3 className="grupo-campos__titulo">
                 <Icono nombre={grupo.icono} tamaño={14} />
                 {grupo.titulo}
+                <span className="grupo-campos__desc">{grupo.descripcionGrupo}</span>
               </h3>
               {grupo.campos.map((campo) => (
                 <CampoKpi
                   key={campo.clave}
                   campo={campo}
-                  valor={valoresLocales[campo.clave] ?? 0}
+                  valor={valores[campo.clave] ?? 0}
                   alCambiar={actualizarCampo}
                 />
               ))}
@@ -148,7 +161,7 @@ const EntradaKpis = ({ alEnviar, alCancelar, kpisIniciales = KPI_INICIALES }) =>
           )}
           <button type="button" className="btn-restablecer" onClick={restablecer}>
             <Icono nombre="editar" tamaño={14} />
-            Restablecer valores
+            Restablecer
           </button>
           <button id="btn-analizar" type="submit" className="btn-analizar">
             <Icono nombre="calificacion" tamaño={15} />

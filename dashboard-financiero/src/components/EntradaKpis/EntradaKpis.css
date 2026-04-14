@@ -97,6 +97,84 @@
   gap: var(--espacio-2);
   padding-bottom: var(--espacio-2);
   border-bottom: 1px solid var(--color-borde-suave);
+  flex-wrap: wrap;
+}
+
+.grupo-campos__desc {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-texto-muy-suave);
+  margin-left: auto;
+}
+
+/* ─── Preview de KPIs en tiempo real ─── */
+.entrada-kpis__preview {
+  background: rgba(99,102,241,0.04);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: var(--radio-xl);
+  padding: var(--espacio-4) var(--espacio-5);
+  position: relative;
+  z-index: 1;
+}
+
+.entrada-kpis__preview-titulo {
+  font-size: var(--tamaño-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primario-claro);
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin-bottom: var(--espacio-3);
+}
+
+.entrada-kpis__preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--espacio-3);
+}
+
+.kpi-derivado {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  border-radius: var(--radio-md);
+  border: 1px solid var(--color-borde-suave);
+  background: var(--color-superficie-2);
+  transition: all var(--transicion-rapida);
+}
+
+.kpi-derivado--positivo {
+  border-color: rgba(16,185,129,0.2);
+  background: rgba(16,185,129,0.05);
+}
+
+.kpi-derivado--positivo .icono { color: var(--color-excelente); }
+.kpi-derivado--neutro .icono   { color: var(--color-texto-muy-suave); }
+
+.kpi-derivado__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.kpi-derivado__etiqueta {
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-texto-muy-suave);
+}
+
+.kpi-derivado__valor {
+  font-size: var(--tamaño-sm);
+  font-weight: 800;
+  color: var(--color-texto);
+  letter-spacing: -0.02em;
 }
 
 /* ─── Campo individual ─── */
@@ -205,9 +283,9 @@
   border-radius: var(--radio-md);
   font-size: var(--tamaño-sm);
   font-weight: 700;
-  color: #fff;
-  background: var(--grad-primario);
-  border: none;
+  color: var(--color-texto);
+  background: var(--color-superficie-3);
+  border: 1px solid var(--color-borde);
   cursor: pointer;
   transition: all var(--transicion-normal);
   letter-spacing: 0.01em;

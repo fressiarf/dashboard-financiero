@@ -35,7 +35,7 @@
 .sidebar__marca h1 {
   font-size: var(--tamaño-lg);
   font-weight: 800;
-  color: var(--color-texto);
+  color: #f9fafb;
   letter-spacing: -0.02em;
 }
 
@@ -60,7 +60,7 @@
   gap: var(--espacio-3);
   padding: var(--espacio-3) var(--espacio-4);
   border-radius: var(--radio-lg);
-  color: var(--color-texto-suave);
+  color: #94a3b8;
   font-weight: 600;
   font-size: var(--tamaño-sm);
   transition: all var(--transicion-rapida);
@@ -70,7 +70,7 @@
 
 .sidebar__link:hover {
   background: rgba(255, 255, 255, 0.03);
-  color: var(--color-texto);
+  color: #f9fafb;
   transform: translateX(4px);
 }
 
@@ -103,24 +103,25 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--color-superficie-3);
+  background: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--tamaño-sm);
   font-weight: 700;
-  color: var(--color-texto);
+  color: #f9fafb;
 }
 
 .usuario-detalles h4 {
   font-size: var(--tamaño-sm);
   font-weight: 600;
   line-height: 1.2;
+  color: #f9fafb;
 }
 
 .usuario-detalles span {
   font-size: 11px;
-  color: var(--color-texto-muy-suave);
+  color: #94a3b8;
 }
 
 @media (max-width: 1024px) {

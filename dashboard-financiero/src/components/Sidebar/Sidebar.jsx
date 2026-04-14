@@ -6,10 +6,11 @@ const Sidebar = ({ vistaActiva, setVistaActiva }) => {
   const { modoOscuro, setModoOscuro } = useAnalisis()
 
   const opciones = [
-    { id: 'dashboard', icono: 'rentabilidad', texto: 'Dashboard' },
-    { id: 'transacciones', icono: 'dinero', texto: 'Transacciones' },
-    { id: 'reportes', icono: 'exportar', texto: 'Reportes' },
-    { id: 'ajustes', icono: 'eficiencia', texto: 'Configuración' }
+    { id: 'dashboard',     icono: 'rentabilidad', texto: 'Dashboard' },
+    { id: 'transacciones', icono: 'dinero',        texto: 'Transacciones' },
+    { id: 'reportes',      icono: 'exportar',      texto: 'Reportes' },
+    { id: 'chatbot',       icono: 'calificacion',  texto: 'Asistente IA' },
+    { id: 'ajustes',       icono: 'eficiencia',    texto: 'Configuración' },
   ]
 
   return (
