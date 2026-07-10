@@ -385,14 +385,7 @@ const ResumenEjecutivo = ({ kpis, alAnalisisCompleto }) => {
       </section>
 
       <footer className="metadatos" aria-label="Metadatos del análisis">
-        <span className="metadatos__item">
-          <Icono nombre="informacion" tamaño={12} />
-          Generado: {metadatos.generadoEn}
-        </span>
-        <span className="metadatos__item">
-          <Icono nombre="eficiencia" tamaño={12} />
-          Tiempo de procesamiento: {metadatos.tiempoProcesamiento}
-        </span>
+
         {metadatos.advertencias.length > 0 && (
           <span className="metadatos__item nivel-advertencia">
             <Icono nombre="advertencia" tamaño={12} />
